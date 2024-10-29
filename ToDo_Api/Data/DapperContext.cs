@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace ToDo_Api.DapperContext
+namespace ToDo_Api.Data
 {
     public class DapperContext
     {
