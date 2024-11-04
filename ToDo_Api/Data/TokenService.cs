@@ -44,7 +44,7 @@ namespace ToDo_Api.Data
                     IssuedAt = DateTime.UtcNow,
                     Issuer = _config["Jwt:Issuer"],
                     Audience = _config["Jwt:Audience"],
-                    Expires = DateTime.UtcNow.AddMinutes(12),
+                    Expires = DateTime.UtcNow.AddHours(12),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 };
 

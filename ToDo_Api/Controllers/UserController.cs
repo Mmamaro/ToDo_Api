@@ -22,11 +22,11 @@ namespace ToDo_Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<User>>> GetUsers(int page, int pageSize)
         {
             try
             {
-                var users = await _userRepo.GetUsers();
+                var users = await _userRepo.GetUsers(page, pageSize);
 
                 var usersDTOs = users.Select( x => new UserDTO()
                 {
@@ -67,7 +67,7 @@ namespace ToDo_Api.Controllers
                     Active = user.Active,
                 };
 
-                return Ok(user);
+                return Ok(userDTO);
             }
             catch (Exception ex)
             {

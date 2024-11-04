@@ -19,6 +19,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddSingleton<IUser, UserRepo>();
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<IStatus, StatusRepo>();
+builder.Services.AddSingleton<ITask, TaskRepo>();
 
 #region JWT-Middleware
 //Jwt configuration starts here

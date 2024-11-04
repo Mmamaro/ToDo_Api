@@ -7,7 +7,7 @@ namespace ToDo_Api.Repositories
     public interface IUser
     {
         public Task<bool> RegisterUser(User payload);
-        public Task<List<User>> GetUsers();
+        public Task<List<User>> GetUsers(int page, int pageSize);
         public Task<User> GetUserById(int id);
         public Task<User> UserExists(string email);
         public Task<User> LogIn(LogInModel payload);
@@ -66,13 +66,24 @@ namespace ToDo_Api.Repositories
             }
         }
 
-        public Task<List<User>> GetUsers()
+        public async Task<List<User>> GetUsers(int page, int pageSize)
         {
             try
             {
+                var skip = (page - 1) * pageSize;
+                var take = pageSize;
+
                 string query = "SELECT * FROM [dbo].[Users]";
 
-                return _context.QueryMultipleRows<User>(query);
+                var data = await _context.QueryMultipleRows<User>(query);
+
+                var finalData = data.OrderBy(u => u.Id)
+                                    .Skip(skip)
+                                    .Take(take)
+                                    .ToList();
+
+                return finalData;
+
             }
             catch (Exception ex)
             {
@@ -152,19 +163,19 @@ namespace ToDo_Api.Repositories
                 if (!string.IsNullOrWhiteSpace(payload.FirstName))
                 {
                     parameters.Add("FirstName", payload.FirstName.ToLower());
-                    addingQuery = ", FirstName = @FirstName";
+                    addingQuery += ", FirstName = @FirstName";
                 }
 
                 if (!string.IsNullOrWhiteSpace(payload.LastName))
                 {
                     parameters.Add("LastName", payload.LastName.ToLower());
-                    addingQuery = ", LastName = @LastName";
+                    addingQuery += ", LastName = @LastName";
                 }
 
                 if (!string.IsNullOrWhiteSpace(payload.Email))
                 {
                     parameters.Add("Email", payload.Email.ToLower());
-                    addingQuery = ", Email = @Email";
+                    addingQuery += ", Email = @Email";
                 }
 
                 finalQuery = initialQuery + addingQuery.Substring(1) + " WHERE Id = @Id";
