@@ -5,6 +5,7 @@ using ToDo_Api.Models;
 
 namespace ToDo_Api.Repositories
 {
+    #region [Interface]
     public interface IStatus
     {
         public Task<bool> AddStatus(string name);
@@ -12,9 +13,11 @@ namespace ToDo_Api.Repositories
         public Task<Status> GetStatusById(int id);
         public Task<bool> UpdateStatus(Status payload);
         public Task<bool> DeleteStatus(int id);
-    }
+    } 
+    #endregion
     public class StatusRepo : IStatus
     {
+        #region [Constructor]
         private readonly ILogger<StatusRepo> _logger;
         private readonly DapperContext _context;
 
@@ -23,8 +26,10 @@ namespace ToDo_Api.Repositories
             _context = context;
             _logger = logger;
         }
+        #endregion
 
 
+        #region [Add Status]
         public async Task<bool> AddStatus(string name)
         {
             try
@@ -43,7 +48,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Delete Status]
         public async Task<bool> DeleteStatus(int id)
         {
             try
@@ -61,7 +68,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get Status By Id]
         public async Task<Status> GetStatusById(int id)
         {
             try
@@ -80,7 +89,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get Statuses]
         public async Task<List<Status>> GetStatuses()
         {
             try
@@ -95,7 +106,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Update Status]
         public async Task<bool> UpdateStatus(Status payload)
         {
             try
@@ -113,6 +126,7 @@ namespace ToDo_Api.Repositories
                 _logger.LogError("Error in the STATUS REPO while trying to UPDATE STATUS: {ex}", ex.Message);
                 return default;
             }
-        }
+        } 
+        #endregion
     }
 }

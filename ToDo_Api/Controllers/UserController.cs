@@ -12,6 +12,7 @@ namespace ToDo_Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        #region [Constructor]
         private readonly ILogger<UserController> _logger;
         private readonly IUser _userRepo;
 
@@ -20,7 +21,9 @@ namespace ToDo_Api.Controllers
             _logger = logger;
             _userRepo = userRepo;
         }
+        #endregion
 
+        #region [Get Users]
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers(int page, int pageSize)
         {
@@ -28,7 +31,7 @@ namespace ToDo_Api.Controllers
             {
                 var users = await _userRepo.GetUsers(page, pageSize);
 
-                var usersDTOs = users.Select( x => new UserDTO()
+                var usersDTOs = users.Select(x => new UserDTO()
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -45,7 +48,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Get User By Id]
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
@@ -75,7 +80,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Update User]
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> UpdateUser(int id, UpdateUser payload)
         {
@@ -97,7 +104,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Update User Active Status]
         [Authorize(Roles = "admin")]
         [HttpPut("update-useractivestatus")]
         public async Task<ActionResult<bool>> UpdateUserActiveStatus(UpdateUserActiveStatus payload)
@@ -120,7 +129,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Update User Role]
         [Authorize(Roles = "admin")]
         [HttpPut("update-userrole")]
         public async Task<ActionResult<bool>> UpdateUserRole(UpdateUserRole payload)
@@ -149,7 +160,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Delete User]
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteUser(int id)
@@ -170,6 +183,7 @@ namespace ToDo_Api.Controllers
                 _logger.LogError("Error in the USER CONTROLLER while trying to DELETE USER: {ex}", ex.Message);
                 return BadRequest(new { Message = "Encountered an error" });
             }
-        }
+        } 
+        #endregion
     }
 }

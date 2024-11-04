@@ -11,6 +11,7 @@ namespace ToDo_Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        #region [Constructor]
         private readonly ILogger<AuthController> _logger;
         private readonly IUser _userRepo;
         private readonly TokenService _tokenService;
@@ -21,7 +22,10 @@ namespace ToDo_Api.Controllers
             _userRepo = userRepo;
             _tokenService = tokenService;
         }
+        #endregion
 
+
+        #region [Register User]
         [HttpPost("register")]
         public async Task<ActionResult<bool>> RegisterUser(RegisterUser payload)
         {
@@ -30,7 +34,7 @@ namespace ToDo_Api.Controllers
 
                 if (payload.Password != payload.ConfirmPassword)
                 {
-                    return BadRequest(new {Message = "Passwords don't match"});
+                    return BadRequest(new { Message = "Passwords don't match" });
                 }
 
                 var userxists = await _userRepo.UserExists(payload.Email);
@@ -66,7 +70,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Log in]
         [HttpPost("login")]
         public async Task<ActionResult<User>> LogIn(LogInModel payload)
         {
@@ -76,7 +82,7 @@ namespace ToDo_Api.Controllers
 
                 if (user == null)
                 {
-                    return BadRequest( new {Message = "Incorrect Credentials"});
+                    return BadRequest(new { Message = "Incorrect Credentials" });
                 }
 
                 string token = await _tokenService.GenerateToken(user);
@@ -101,6 +107,7 @@ namespace ToDo_Api.Controllers
                 _logger.LogError("Error in the USER CONTROLLER while trying to LOG IN: {ex}", ex.Message);
                 return BadRequest(new { Message = "Encountered an error" });
             }
-        }
+        } 
+        #endregion
     }
 }

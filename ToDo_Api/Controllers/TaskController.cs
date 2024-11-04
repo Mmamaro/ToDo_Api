@@ -12,6 +12,7 @@ namespace ToDo_Api.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
+        #region [Constructor]
         private readonly ITask _taskRepo;
         private readonly ILogger<TaskController> _logger;
         private readonly IUser _userRepo;
@@ -24,7 +25,10 @@ namespace ToDo_Api.Controllers
             _userRepo = userRepo;
             _statusRepo = statusRepo;
         }
+        #endregion
 
+
+        #region [Get Tasks]
         [HttpGet]
         public async Task<ActionResult<List<ToDo_Api.Models.Task>>> GetTasks(int page, int pageSize)
         {
@@ -40,7 +44,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Get Tasks By UserId]
         [HttpGet("userid/{id}")]
         public async Task<ActionResult<List<ToDo_Api.Models.Task>>> GetTasksByUserId(int id)
         {
@@ -51,7 +57,7 @@ namespace ToDo_Api.Controllers
 
                 if (user == null)
                 {
-                    return NotFound(new {Message = "User does not exist"});
+                    return NotFound(new { Message = "User does not exist" });
                 }
 
                 var tasks = await _taskRepo.GetTasksByUserId(id);
@@ -69,7 +75,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Get Task By Id]
         [HttpGet("{id}")]
         public async Task<ActionResult<ToDo_Api.Models.Task>> GetTaskById(int id)
         {
@@ -92,7 +100,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Add Task]
         [HttpPost]
         public async Task<ActionResult<bool>> AddTask(AddTask payload)
         {
@@ -102,7 +112,7 @@ namespace ToDo_Api.Controllers
 
                 if (status == null)
                 {
-                    return NotFound(new {Message = "Status Id does not exist"});
+                    return NotFound(new { Message = "Status Id does not exist" });
                 }
 
                 var user = await _userRepo.GetUserById(payload.UserId);
@@ -116,10 +126,10 @@ namespace ToDo_Api.Controllers
 
                 if (!isAdded)
                 {
-                    return BadRequest(new {Message = "Could not add task"});
+                    return BadRequest(new { Message = "Could not add task" });
                 }
 
-                return Ok(new {Message = "Task added successfully"});
+                return Ok(new { Message = "Task added successfully" });
             }
             catch (Exception ex)
             {
@@ -127,7 +137,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Update Task]
         [HttpPut("id")]
         public async Task<ActionResult<bool>> UpdateTask(int id, UpdateTask payload)
         {
@@ -139,12 +151,12 @@ namespace ToDo_Api.Controllers
 
                 if (task == null)
                 {
-                   return NotFound(new { Message = "Task does not exist" });
+                    return NotFound(new { Message = "Task does not exist" });
                 }
 
                 if (task.Email != currentlyLoggedUser)
                 {
-                    return Unauthorized( new {Message = "Attemping to update a Task that dos not belong to you"});
+                    return Unauthorized(new { Message = "Attemping to update a Task that dos not belong to you" });
                 }
 
                 var isUpdated = await _taskRepo.UpdateTask(id, payload);
@@ -162,7 +174,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Delete Task]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteTask(int id)
         {
@@ -196,8 +210,7 @@ namespace ToDo_Api.Controllers
                 _logger.LogError("Error in the TASK CONTROLLER while trying to DELETE A TASK: {ex}", ex.Message);
                 return BadRequest(new { Message = "Encountered an error" });
             }
-        }
+        } 
+        #endregion
     }
 }
-//To do
-//Add ON DELETE CASCADE ON THE TASK TABLE

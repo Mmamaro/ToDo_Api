@@ -4,6 +4,7 @@ using ToDo_Api.Models;
 
 namespace ToDo_Api.Repositories
 {
+    #region [Interface]
     public interface IUser
     {
         public Task<bool> RegisterUser(User payload);
@@ -16,9 +17,11 @@ namespace ToDo_Api.Repositories
         public Task<bool> UpdateUserRole(UpdateUserRole payload);
         public Task<bool> DeleteUser(int id);
 
-    }
+    } 
+    #endregion
     public class UserRepo : IUser
     {
+        #region [Constructor]
         private readonly ILogger<UserRepo> _logger;
         private readonly DapperContext _context;
 
@@ -26,8 +29,10 @@ namespace ToDo_Api.Repositories
         {
             _context = context;
             _logger = logger;
-        }
+        } 
+        #endregion
 
+        #region [Delete User]
         public async Task<bool> DeleteUser(int id)
         {
             try
@@ -46,7 +51,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get User By Id]
         public Task<User> GetUserById(int id)
         {
             try
@@ -65,7 +72,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get All Users]
         public async Task<List<User>> GetUsers(int page, int pageSize)
         {
             try
@@ -82,7 +91,7 @@ namespace ToDo_Api.Repositories
                                     .Take(take)
                                     .ToList();
 
-                return finalData;  
+                return finalData;
 
             }
             catch (Exception ex)
@@ -91,7 +100,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Log In]
         public async Task<User> LogIn(LogInModel payload)
         {
             try
@@ -124,7 +135,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Register User]
         public async Task<bool> RegisterUser(User payload)
         {
             try
@@ -148,14 +161,16 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Update User]
         public async Task<bool> UpdateUser(int Id, UpdateUser payload)
         {
             try
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", Id);
-               
+
                 string initialQuery = "UPDATE [dbo].[Users] SET ";
                 string addingQuery = string.Empty;
                 string finalQuery = string.Empty;
@@ -189,7 +204,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Update User Active Status]
         public async Task<bool> UpdateUserActiveStatus(UpdateUserActiveStatus payload)
         {
             try
@@ -209,7 +226,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Update User Role]
         public async Task<bool> UpdateUserRole(UpdateUserRole payload)
         {
             try
@@ -228,7 +247,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [User Exists]
         public Task<User> UserExists(string email)
         {
             try
@@ -246,6 +267,7 @@ namespace ToDo_Api.Repositories
                 _logger.LogError("Error in the User Repo while trying to CHECK IF USER EXISTS: {ex}", ex.Message);
                 return default;
             }
-        }
+        } 
+        #endregion
     }
 }

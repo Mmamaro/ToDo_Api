@@ -10,6 +10,7 @@ namespace ToDo_Api.Data
 {
     public class TokenService
     {
+        #region [Constructor]
         private readonly IConfiguration _config;
         private readonly ILogger<TokenService> _logger;
 
@@ -17,8 +18,10 @@ namespace ToDo_Api.Data
         {
             _config = configuration;
             _logger = logger;
-        }
+        } 
+        #endregion
 
+        #region [Generate Token]
         public async Task<string> GenerateToken(User user)
         {
             try
@@ -62,5 +65,6 @@ namespace ToDo_Api.Data
 
         }
 
-    }
+    } 
+    #endregion
 }

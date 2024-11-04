@@ -11,6 +11,7 @@ namespace ToDo_Api.Controllers
     [ApiController]
     public class StatusController : ControllerBase
     {
+        #region [Constructor]
         private readonly IStatus _statusRepo;
         private readonly ILogger<StatusController> _logger;
 
@@ -19,7 +20,9 @@ namespace ToDo_Api.Controllers
             _statusRepo = statusRepo;
             _logger = logger;
         }
+        #endregion
 
+        #region [Add Status]
         [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult<bool>> AddStatus(string name)
@@ -34,7 +37,7 @@ namespace ToDo_Api.Controllers
                     return BadRequest(new { Message = "Could not add status" });
                 }
 
-                return Ok( new {Message = "Status added successfully"});
+                return Ok(new { Message = "Status added successfully" });
             }
             catch (Exception ex)
             {
@@ -42,7 +45,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Get Statuses]
         [HttpGet]
         public async Task<ActionResult<List<Status>>> GetStatuses()
         {
@@ -58,7 +63,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Get Status By Id]
         [HttpGet("{id}")]
         public async Task<ActionResult<Status>> GetStatusById(int id)
         {
@@ -79,7 +86,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Update Status]
         [Authorize(Roles = "admin")]
         [HttpPut]
         public async Task<ActionResult<Status>> UpdateStatus(Status payload)
@@ -108,7 +117,9 @@ namespace ToDo_Api.Controllers
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
+        #endregion
 
+        #region [Delete Status]
         [Authorize(Roles = "admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> DeleteStatus(int id)
@@ -136,6 +147,7 @@ namespace ToDo_Api.Controllers
                 _logger.LogError("Error in the STATUS CONTROLLER while trying to delete a status: {ex}", ex.Message);
                 return BadRequest(new { Message = "Encountered an error" });
             }
-        }
+        } 
+        #endregion
     }
 }

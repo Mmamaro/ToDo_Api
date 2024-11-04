@@ -4,6 +4,7 @@ using ToDo_Api.Models;
 
 namespace ToDo_Api.Repositories
 {
+    #region [Interface]
     public interface ITask
     {
         public Task<List<ToDo_Api.Models.Task>> GetTasks(int page, int pageSize);
@@ -12,9 +13,11 @@ namespace ToDo_Api.Repositories
         public Task<bool> AddTask(AddTask payload);
         public Task<bool> UpdateTask(int Id, UpdateTask payload);
         public Task<bool> DeleteTask(int id);
-    }
+    } 
+    #endregion
     public class TaskRepo : ITask
     {
+        #region [Constructor]
         private readonly ILogger<TaskRepo> _logger;
         private readonly DapperContext _context;
 
@@ -24,6 +27,9 @@ namespace ToDo_Api.Repositories
             _logger = logger;
         }
 
+        #endregion
+
+        #region [Add Task]
         public async Task<bool> AddTask(AddTask payload)
         {
             try
@@ -48,7 +54,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Delete Task]
         public async Task<bool> DeleteTask(int id)
         {
             try
@@ -67,7 +75,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get Task By Id]
         public async Task<ToDo_Api.Models.Task> GetTaskById(int id)
         {
             try
@@ -86,7 +96,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get Tasks]
         public async Task<List<ToDo_Api.Models.Task>> GetTasks(int page, int pageSize)
         {
             try
@@ -96,7 +108,7 @@ namespace ToDo_Api.Repositories
 
                 string query = "SELECT * FROM todo_view";
 
-                var data =  await _context.QueryMultipleRows<ToDo_Api.Models.Task>(query);
+                var data = await _context.QueryMultipleRows<ToDo_Api.Models.Task>(query);
 
                 var finalData = data.OrderBy(u => u.Id)
                                     .Skip(skip)
@@ -111,7 +123,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Get Tasks By User Id]
         public async Task<List<ToDo_Api.Models.Task>> GetTasksByUserId(int id)
         {
             try
@@ -136,7 +150,9 @@ namespace ToDo_Api.Repositories
                 return default;
             }
         }
+        #endregion
 
+        #region [Update Task]
         public async Task<bool> UpdateTask(int Id, UpdateTask payload)
         {
             try
@@ -179,6 +195,7 @@ namespace ToDo_Api.Repositories
                 _logger.LogError("Error in the Task REPO while trying to UPDATE A TASK {ex}", ex.Message);
                 return default;
             }
-        }
+        } 
+        #endregion
     }
 }
