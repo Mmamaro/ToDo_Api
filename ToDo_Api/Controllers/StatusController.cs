@@ -133,7 +133,7 @@ namespace ToDo_Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error in the STATUS CONTROLLER while trying to :", ex.Message);
+                _logger.LogError("Error in the STATUS CONTROLLER while trying to delete a status: {ex}", ex.Message);
                 return BadRequest(new { Message = "Encountered an error" });
             }
         }
