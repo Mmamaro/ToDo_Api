@@ -1,10 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Serilog;
-using System.Text;
-using ToDo_Api.Data;
-using ToDo_Api.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

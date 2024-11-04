@@ -1,11 +1,4 @@
-﻿using Dapper;
-using Microsoft.IdentityModel.Tokens;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ToDo_Api.Models;
-
+﻿
 namespace ToDo_Api.Data
 {
     public class TokenService
@@ -64,7 +57,7 @@ namespace ToDo_Api.Data
             }
 
         }
+        #endregion
+    }
 
-    } 
-    #endregion
 }

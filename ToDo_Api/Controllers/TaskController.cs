@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using ToDo_Api.Models;
-using ToDo_Api.Repositories;
+﻿
 
 namespace ToDo_Api.Controllers
 {

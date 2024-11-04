@@ -1,7 +1,4 @@
-﻿using Dapper;
-using Microsoft.Data.SqlClient;
-using System.Data;
-
+﻿
 namespace ToDo_Api.Data
 {
     public class DapperContext
@@ -15,7 +12,7 @@ namespace ToDo_Api.Data
         {
             _config = config;
             _logger = logger;
-            _connectionString = Environment.GetEnvironmentVariable("db_connection")!;
+            _connectionString = _config.GetConnectionString("DefaultConnection")!;
         }
         #endregion
 
